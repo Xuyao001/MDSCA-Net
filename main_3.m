@@ -11,7 +11,7 @@ for da=1:1:4
     load CAN_A.mat;
 % load CAN_B.mat;
 % load A+B.mat;
-load AB.mat;
+% load AB.mat;
 % load BA.mat;
 % load BB.mat;
 % load BAB.mat;
@@ -21,7 +21,7 @@ load AB.mat;
 %         load CAN_A.mat;
         if da~=1
                 if da==2
-                    snr=2;
+                    snr=6;
                 end
                 if da==3
                     snr=9;
