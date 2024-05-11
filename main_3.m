@@ -417,8 +417,7 @@ for da=1:1:4
     %  lgraph=connectLayers(lgraph,'addition6','addition10/in2');
     %   lgraph=connectLayers(lgraph,'addition6','con10');
      lgraph=connectLayers(lgraph,'relu40','globalA4');
-    %%  绘制网络分析图
-    analyzeNetwork(lgraph)
+
     
     
     %%  参数设置
