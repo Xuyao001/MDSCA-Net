@@ -8,17 +8,7 @@ for da=1:1:4
 %     clc                     % 清空命令行
     
     %%  导入数据
-    load CAN_A.mat;
-% load CAN_B.mat;
-% load A+B.mat;
-% load AB.mat;
-% load BA.mat;
-% load BB.mat;
-% load BAB.mat;
-% load a.mat;
-% for da=1:1:4
-%     for xunhuan=1:1:5
-%         load CAN_A.mat;
+    load CAND.mat;
         if da~=1
                 if da==2
                     snr=6;
@@ -35,70 +25,6 @@ for da=1:1:4
             end
             res=[y1 res(:,281)];
         end
-    
-    %         res=[y1 res(:,281)];
-    %     end
-    %     
-    %         for i=1:1:length(res)
-    %             snr=12;
-    %             res_1=res(i,1:280);
-    %             y1(i,:)=awgn(res_1,snr,'measured','dB');
-    %         end
-    %         res=[y1 res(:,281)];
-    %     end 
-    %     if da==4
-    %         for i=1:1:length(res)
-    %             snr=24;
-    %             res_1=res(i,1:280);
-    %             y1(i,:)=awgn(res_1,snr,'measured','dB');
-    %         end
-    %         res=[y1 res(:,281)];
-    %     end 
-    % rng(100)
-    % setdemorandstream(88888)
-    %%  划分训练集和测试集
-    % temp = randperm(length(res));
-    % 
-    % P_train = res(temp(1: 8000), 1: 280)';
-    % T_train = res(temp(1: 8000), 281)';
-    % M = size(P_train, 2);
-    % 
-    % P_train_1 = res(temp(8001: 10000), 1: 280)';
-    % T_train_1 = res(temp(8001: 10000), 281)';
-    % k = size(P_train_1, 2);
-    % 
-    % P_test = res(temp(10001: end), 1: 280)';
-    % T_test = res(temp(10001: end), 281)';
-    % N = size(P_test, 2);
-    
-    % temp = randperm(length(res));
-    % 
-    % P_train = res(temp(1: 1500), 1: 280)';
-    % T_train = res(temp(1: 1500), 281)';
-    % M = size(P_train, 2);
-    % 
-    % P_train_1 = res(temp(1501: 2000), 1: 280)';
-    % T_train_1 = res(temp(1501: 2000), 281)';
-    % k = size(P_train_1, 2);
-    % 
-    % P_test = res(temp(2001: end), 1: 280)';
-    % T_test = res(temp(2001: end), 281)';
-    % N = size(P_test, 2);
-    
-    % temp = randperm(length(res));
-    % 
-    % P_train = res(temp(1: 800), 1: 280)';
-    % T_train = res(temp(1: 800), 281)';
-    % M = size(P_train, 2);
-    % 
-    % P_train_1 = res(temp(801: 1100), 1: 280)';
-    % T_train_1 = res(temp(801: 1100), 281)';
-    % k = size(P_train_1, 2);
-    % 
-    % P_test = res(temp(1101: end), 1: 280)';
-    % T_test = res(temp(1101: end), 281)';
-    % N = size(P_test, 2);
-    
     temp = randperm(length(res));
     
     P_train = res(temp(1: 4000), 1: 280)';
@@ -438,14 +364,6 @@ for da=1:1:4
     
     %%  训练模型
     
-    % newLearnableLayer = fullyConnectedLayer(10, ...
-    %     'Name','new_fc', ...
-    %     'WeightLearnRateFactor',10, ...
-    %     'BiasLearnRateFactor',10);
-    %     
-    % lgraph = replaceLayer(lgraph,'fullyC',newLearnableLayer);
-    % newClassLayer = classificationLayer('Name','new_classoutput');
-    % lgraph = replaceLayer(lgraph,'output',newClassLayer);
     
     net = trainNetwork(p_train, t_train, lgraph, options);
 %     close all
@@ -535,56 +453,7 @@ for jisuan=1:1:16
     a_jieguo(7,jisuan)=ai_mean;
 end
 dlmwrite('MDSCA.txt', a_jieguo, ' ');
-% clear xunhuan;
-%%  数据排序
-% [T_train, index_1] = sort(T_train);
-% [T_test , index_2] = sort(T_test );
-% 
-% T_sim1 = T_sim1(index_1);
-% T_sim2 = T_sim2(index_2);
 
-%%  绘图
-% figure
-% plot(1: M, T_train, 'r-*', 1: M, T_sim1, 'b-o', 'LineWidth', 1)
-% legend('真实值', '预测值')
-% xlabel('预测样本')
-% ylabel('预测结果')
-% string = {'训练集预测结果对比'; ['准确率=' num2str(error1) '%']};
-% title(string)
-% xlim([1, M])
-% grid
-% 
-% figure
-% plot(1: N, T_test, 'r-*', 1: N, T_sim2, 'b-o', 'LineWidth', 1)
-% legend('真实值', '预测值')
-% xlabel('预测样本')
-% ylabel('预测结果')
-% string = {'测试集预测结果对比'; ['准确率=' num2str(error2) '%']};
-% title(string)
-% xlim([1, N])
-% grid
 
-%%  混淆矩阵
-figure
-cm = confusionchart(T_train, T_sim1);
-cm.Title = 'Confusion Matrix for Train Data';
-cm.ColumnSummary = 'column-normalized';
-cm.RowSummary = 'row-normalized';
-    
-figure
-cm = confusionchart(T_test, T_sim2);
-% cm.Title = 'Confusion Matrix for Test Data';
-cm.ColumnSummary = 'column-normalized';
-cm.RowSummary = 'row-normalized';
-cm.XLabel='The predicted fault';
-cm.YLabel='The actual fault';
-set(gca, 'FontName', 'Times New Roman')
-set(gca, 'FontSize', 12)
-set(gca,'position',[0.1,0.12,0.8,0.8])
-set(gcf,'Units','centimeters','Position',[7,4,15,12])
-% xlabel('The predicted fault','FontName','Times New Roman','FontSize',12);
-% ylabel('The actual fault','FontName','Times New Roman','FontSize',12);
 
-% figure
-% plotroc(T_test,T_sim2);
 
